@@ -42,7 +42,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     protected function getUserByToken($token)
     {
         $response = $this->getHttpClient()->get(
-            'https://www.deviantart.com/api/v1/oauth2/user/whoami?access_token='.$token, [
+            'https://www.deviantart.com/api/v1/oauth2/user/whoami?expand=user.profile&access_token='.$token, [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
             ],
@@ -58,7 +58,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     {
         return (new User())->setRaw($user)->map([
             'id' => $user['userid'], 'nickname' => $user['username'],
-            'name' => null, 'email' => null, 'avatar' => $user['usericon'],
+            'name' => $user['profile']['real_name'], 'email' => null, 'avatar' => $user['usericon'],
         ]);
     }
 
